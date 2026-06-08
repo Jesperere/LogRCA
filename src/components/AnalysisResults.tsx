@@ -1,6 +1,7 @@
 import type { AnalysisResult } from "../types/logAnalysis";
 import { ResultListCard } from "./ResultListCard";
 import { ParsedLogsTable } from "./ParsedLogsTable";
+import { CopyButton } from "./CopyButton";
 
 type AnalysisResultsProps = {
   result: AnalysisResult;
@@ -51,7 +52,10 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       />
 
       <article className="card wide">
-        <h3>Engineering Escalation Note</h3>
+        <div className="card-header">
+          <h3>Engineering Escalation Note</h3>
+          <CopyButton text={result.escalationNote} label="Copy note" />
+        </div>
         <p>{result.escalationNote}</p>
       </article>
 
