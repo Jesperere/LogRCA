@@ -1,6 +1,8 @@
 import type { AnalysisResult } from "../../types/logAnalysis";
+import { detectIssueCategories } from "./detectIssueCategories";
 import { detectLikelyRootCause } from "./detectLikelyRootCause";
 import { determineSeverity } from "./determineSeverity";
+import { generateRecommendedChecks } from "./generateRecommendedChecks";
 import { getRepeatedMessages } from "./getRepeatedMessages";
 import { parseLogLine } from "./parseLogLine";
 
@@ -53,15 +55,8 @@ export function analyzeLogs(logText: string): AnalysisResult {
       : `${warningCount} warning(s) and ${infoCount} info log(s) were detected. No ERROR-level logs were found.`;
 
   const likelyRootCause = detectLikelyRootCause(parsedLines);
-
-  const recommendedChecks = [
-    "Confirm whether the issue affects one user, multiple users, or all users.",
-    "Identify the first timestamp where the issue appears and compare it against recent deployments or configuration changes.",
-    "Check downstream service status, API response times, and network connectivity.",
-    "Use browser dev tools, Postman, or API logs to reproduce the failing request.",
-    "Review related application logs, database records, monitoring dashboards, and alert history.",
-    "Document reproduction steps and expected vs. actual behavior before escalating.",
-  ];
+  const issueCategories = detectIssueCategories(parsedLines);
+  const recommendedChecks = generateRecommendedChecks(issueCategories);
 
   const escalationNote =
     errorCount > 0
@@ -85,5 +80,6 @@ export function analyzeLogs(logText: string): AnalysisResult {
     recommendedChecks,
     escalationNote,
     parsedLines,
+    issueCategories,
   };
 }

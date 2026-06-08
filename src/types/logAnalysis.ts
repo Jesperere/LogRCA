@@ -30,6 +30,15 @@ export type AnalysisResult = {
   recommendedChecks: string[];
   escalationNote: string;
   parsedLines: ParsedLogLine[];
+  issueCategories: IssueCategory[];
 };
 
 export type IncidentSeverity = "Low" | "Medium" | "High";
+
+export type IssueCategory =
+  | "timeout"
+  | "auth"
+  | "server-error"
+  | "database"
+  | "successful-response-data-issue"
+  | "unknown";

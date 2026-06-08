@@ -10,6 +10,12 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
   return (
     <section className="results">
       <ResultListCard
+        title="Detected Issue Categories"
+        items={result.issueCategories}
+        emptyMessage="No issue categories detected."
+      />
+
+      <ResultListCard
         title="Affected Endpoints"
         items={result.affectedEndpoints}
         emptyMessage="No endpoints detected."
